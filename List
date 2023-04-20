@@ -1,0 +1,107 @@
+class MyList<T> {
+    /**
+     * Класс MyList<T> представляет собой реализацию структуры данных Список на основе связного списка.
+     * @param <T> обобщенный тип элементов списка.
+     */
+    private int size;
+    private Node<T> first;
+    private Node<T> last;
+
+    // Вложенный класс Node<T>, описывающий узел связного списка
+    private static class Node<T> {
+        T element;
+        Node<T> prev;
+        Node<T> next;
+
+        public Node(T element, Node<T> prev, Node<T> next) {
+            this.element = element;
+            this.prev = prev;
+            this.next = next;
+        }
+
+        /**
+         * Конструктор класса Node. Создает новый узел связного списка.
+         * @param element значение элемента узла.
+         * @param prev ссылка на предыдущий элемент списка.
+         * @param next ссылка на следующий элемент списка.
+         */
+    }
+
+    public MyList() {
+        size = 0;
+        first = null;
+        last = null;
+    }
+    /**
+     * Конструктор класса MyList. Создает пустой связный список.
+     */
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void add(T element) {
+        Node<T> newNode = new Node<>(element, last, null);
+        if (last != null) {
+            last.next = newNode;
+        } else {
+            first = newNode;
+        }
+        last = newNode;
+        size++;
+    }
+
+    public T get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        Node<T> current = first;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.element;
+    }
+
+    /**
+     * Метод get(int index) возвращает элемент списка по указанному индексу.
+     * @param index индекс элемента, который нужно получить из списка.
+     * @return элемент списка.
+     * @throws IndexOutOfBoundsException если указанный индекс выходит за пределы списка.
+     */
+
+    public void remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        Node<T> current = first;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        if (current.prev != null) {
+            current.prev.next = current.next;
+        } else {
+            first = current.next;
+        }
+        if (current.next != null) {
+            current.next.prev = current.prev;
+        } else {
+            last = current.prev;
+        }
+        size--;
+    }
+
+    public boolean contains(T element) {
+        Node<T> current = first;
+        while (current != null) {
+            if (current.element.equals(element)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+}
